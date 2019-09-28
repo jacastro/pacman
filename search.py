@@ -128,11 +128,26 @@ def breadthFirstSearch(problem):
         for nextState, nextWay, nextCost in problem.getSuccessors(current):
             tree.push((nextState, movements + [nextWay], nextCost))
 
-
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    pq = util.PriorityQueue()
+    pq.push((problem.getStartState(), [], 0), 0)
+    visited = []
+
+    while not pq.isEmpty():
+        current, movements, cost = pq.pop()
+
+        if current in visited:
+            continue
+
+        visited.append(current)
+
+        if problem.isGoalState(current):
+            print("Found solution: ", movements)
+            return movements
+        else:
+            for nextState, nextWay, nextCost in problem.getSuccessors(current):
+                pq.push((nextState, movements + [nextWay], nextCost), cost + nextCost)
 
 def nullHeuristic(state, problem=None):
     """
